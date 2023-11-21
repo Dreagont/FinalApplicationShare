@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
+    public fun sayHello() {
+        println("Nguyen")
+    }
 }
 
