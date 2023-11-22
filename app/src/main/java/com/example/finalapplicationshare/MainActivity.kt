@@ -11,6 +11,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import android.content.Context
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +22,23 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    public fun sayHello() {
-        println("Nguyen")
+    public fun addWithAutoGenId() {
+        val database = FirebaseDatabase.getInstance()
+        val databaseReference = database.getReference("Users")
+
+        val data = hashMapOf(
+            "field1" to "value1",
+            "field2" to "value2"
+        )
+
+        val newChildReference = databaseReference.push()
+        newChildReference.setValue(data)
+            .addOnSuccessListener {
+                Toast.makeText(this,"Data added successfully with key: ${newChildReference.key}",Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this,"Fail: ${newChildReference.key}",Toast.LENGTH_SHORT).show()
+            }
+
     }
 }
-//wkfjaif
