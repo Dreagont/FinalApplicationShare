@@ -7,60 +7,41 @@
     android:orientation="vertical"
     android:padding="20dp"
     tools:context=".AddTopicActivity">
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Topic name"
-        android:id="@+id/addTopicName"
-        />
+        android:id="@+id/addTopicName"/>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Topic Description"
-        android:id="@+id/addTopicDes"
-        />
+        android:hint="Topic description"
+        android:id="@+id/addTopicDes"/>
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:id="@+id/chooseVisible"
-        >
-        <LinearLayout
+        android:id="@+id/chooseVisible">
+
+        <RadioButton
+            android:id="@+id/radio_private"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Private"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/privateMode"
-                />
-        </LinearLayout>
-        <LinearLayout
+            android:text="Private" />
+
+        <RadioButton
+            android:id="@+id/radio_public"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Public"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/publicMode"
-                />
-        </LinearLayout>
+            android:layout_weight="1"
+            android:text="Public" />
     </RadioGroup>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit"
         android:id="@+id/btnAddTopic"/>
-
 </LinearLayout>

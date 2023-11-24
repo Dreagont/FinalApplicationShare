@@ -1,5 +1,6 @@
 package com.example.finalapplicationshare
 
+import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -12,6 +13,13 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.Gravity
+import android.view.Window
+import android.view.WindowManager
+import org.checkerframework.common.subtyping.qual.Bottom
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +27,31 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val addButton = findViewById<Button>(R.id.btnAdd)
 
+        addButton.setOnClickListener{
+            showCustomDialog()
+        }
+    }
+
+    private fun showCustomDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.custom_dialog)
+
+        dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setWindowAnimations(R.style.DialogAnimation)
+        dialog.window?.setGravity(Gravity.BOTTOM)
+        dialog.show()
+
+        val addFolder = dialog.findViewById<Button>(R.id.btnAddFolder)
+        val addTopic = dialog.findViewById<Button>(R.id.btnAddFolder)
+
+        addFolder.setOnClickListener {
+            startActivity(Intent(this, AddFolderActivity::class.java))
+        }
+        addTopic.setOnClickListener {
+            startActivity(Intent(this, AddTopicActivity::class.java))
+        }
     }
 
     public fun addWithAutoGenId() {
@@ -39,6 +71,7 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Toast.makeText(this,"Fail: ${newChildReference.key}",Toast.LENGTH_SHORT).show()
             }
-
     }
+
+
 }
