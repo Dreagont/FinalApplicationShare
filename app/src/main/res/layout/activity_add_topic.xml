@@ -12,13 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Topic name"
-        android:id="@+id/addTopicName"/>
+        android:id="@+id/topicName"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Topic description"
-        android:id="@+id/addTopicDes"/>
+        android:id="@+id/topicDescription"/>
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

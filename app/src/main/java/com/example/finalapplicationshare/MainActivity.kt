@@ -19,13 +19,22 @@ import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
 import android.view.Window
 import android.view.WindowManager
+import com.example.finalapplicationshare.databinding.ActivityMainBinding
 import org.checkerframework.common.subtyping.qual.Bottom
 
 
 class MainActivity : AppCompatActivity() {
+    lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, FragmentMain())
+                .commit()
+        }
 
         val addButton = findViewById<Button>(R.id.btnAdd)
 
@@ -44,34 +53,28 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
 
         val addFolder = dialog.findViewById<Button>(R.id.btnAddFolder)
-        val addTopic = dialog.findViewById<Button>(R.id.btnAddFolder)
+        val addTopic = dialog.findViewById<Button>(R.id.btnAddTopic)
 
         addFolder.setOnClickListener {
             startActivity(Intent(this, AddFolderActivity::class.java))
+            dialog.dismiss()
         }
         addTopic.setOnClickListener {
             startActivity(Intent(this, AddTopicActivity::class.java))
+            dialog.dismiss()
         }
     }
 
-    public fun addWithAutoGenId() {
-        val database = FirebaseDatabase.getInstance()
-        val databaseReference = database.getReference("Users")
+    override fun onResume() {
+        super.onResume()
+        val sharedPref = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        if (sharedPref.getBoolean("showFragmentFolder", false)) {
+            sharedPref.edit().putBoolean("showFragmentFolder", false).apply()
 
-        val data = hashMapOf(
-            "field1" to "value1",
-            "field2" to "value2"
-        )
-
-        val newChildReference = databaseReference.push()
-        newChildReference.setValue(data)
-            .addOnSuccessListener {
-                Toast.makeText(this,"Data added successfully with key: ${newChildReference.key}",Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this,"Fail: ${newChildReference.key}",Toast.LENGTH_SHORT).show()
-            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, FragmentFolder())
+                .commit()
+            invalidateOptionsMenu()
+        }
     }
-
-
 }

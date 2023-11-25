@@ -14,13 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Folder name"
-        android:id="@+id/addFolderName"
+        android:id="@+id/folderName"
         />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Folder description"
-        android:id="@+id/addFolderDes"
+        android:id="@+id/folderDescription"
         />
     <Button
         android:layout_width="match_parent"
