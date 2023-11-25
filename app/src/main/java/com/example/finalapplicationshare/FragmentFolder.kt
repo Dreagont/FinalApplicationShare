@@ -24,8 +24,6 @@ class FragmentFolder : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.folder_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
