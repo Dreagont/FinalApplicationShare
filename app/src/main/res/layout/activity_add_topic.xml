@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="20dp"
     tools:context=".AddTopicActivity">
 
     <EditText
+        android:id="@+id/topicName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Topic name"
-        android:id="@+id/topicName"/>
+        android:layout_marginTop="16dp"/>
 
     <EditText
+        android:id="@+id/topicDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Topic description"
-        android:id="@+id/topicDescription"/>
+        android:layout_below="@+id/topicName"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnAddTopic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_below="@+id/topicDescription"
+        android:layout_marginTop="8dp"
         android:id="@+id/chooseVisible">
 
         <RadioButton
@@ -39,9 +51,5 @@
             android:layout_weight="1"
             android:text="Public" />
     </RadioGroup>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:id="@+id/btnAddTopic"/>
-</LinearLayout>
+
+</RelativeLayout >
