@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
+import com.example.finalapplicationshare.models.Topic
 import com.google.firebase.database.FirebaseDatabase
 
 class AddTopicActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.example.finalapplicationshare
+package com.example.finalapplicationshare.models
 
 data class Word(
     val english: String,

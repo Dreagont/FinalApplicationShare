@@ -19,6 +19,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
 import android.view.Window
 import android.view.WindowManager
+import androidx.databinding.DataBindingUtil
 import com.example.finalapplicationshare.databinding.ActivityMainBinding
 import org.checkerframework.common.subtyping.qual.Bottom
 
