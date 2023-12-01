@@ -1,10 +1,12 @@
 package com.example.finalapplicationshare
 
-
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -15,9 +17,12 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var etUsername: EditText
     private lateinit var etPassword: EditText
     private lateinit var btnLogin: Button
+    private lateinit var tvRegister:TextView
+    private lateinit var tvForgerPass:TextView
 
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +31,22 @@ class LoginActivity : AppCompatActivity() {
         etUsername = findViewById(R.id.etUsername)
         etPassword = findViewById(R.id.etPass)
         btnLogin = findViewById(R.id.btnLogin)
+        tvRegister = findViewById(R.id.tvRegister)
+        tvForgerPass = findViewById(R.id.tvForgetPass)
 
         auth = FirebaseAuth.getInstance()
         databaseReference = FirebaseDatabase.getInstance().reference.child("users")
 
+        sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
+
         btnLogin.setOnClickListener { loginUser() }
+
+        tvRegister.setOnClickListener{
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
     private fun loginUser() {
@@ -50,11 +66,11 @@ class LoginActivity : AppCompatActivity() {
 
                     if (user != null) {
                         if (user.password == password) {
-                            val intent = Intent(this@LoginActivity, ProfileActivity::class.java)
-                            intent.putExtra("username", user.username)
-                            intent.putExtra("email", user.email)
-                            intent.putExtra("profileImage", user.profileImage)
-                            startActivity(intent)
+                            // Lưu thông tin người dùng vào SharedPreferences
+                            saveUserInfo(user)
+
+                            // Chuyển đến trang MainActivity
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             finish()
                         } else {
                             // Sai mật khẩu
@@ -70,5 +86,13 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun saveUserInfo(user: User) {
+        val editor = sharedPreferences.edit()
+        editor.putString("username", user.username)
+        editor.putString("email", user.email)
+        editor.putString("profileImage", user.profileImage)
+        editor.apply()
     }
 }

@@ -19,7 +19,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
 import android.view.Window
 import android.view.WindowManager
-import androidx.databinding.DataBindingUtil
+//import androidx.databinding.DataBindingUtil
 import com.example.finalapplicationshare.databinding.ActivityMainBinding
 import org.checkerframework.common.subtyping.qual.Bottom
 
@@ -38,9 +38,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         val addButton = findViewById<Button>(R.id.btnAdd)
+        val btnProfile = findViewById<Button>(R.id.btnProfile)
+
 
         addButton.setOnClickListener{
             showCustomDialog()
+        }
+
+        btnProfile.setOnClickListener{
+            val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

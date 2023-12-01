@@ -1,12 +1,14 @@
 package com.example.finalapplicationshare
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -16,6 +18,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var tvUsername: TextView
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var databaseReference: DatabaseReference
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,19 +30,38 @@ class ProfileActivity : AppCompatActivity() {
         ivAvatar = findViewById(R.id.ivAvatar)
         tvUsername = findViewById(R.id.tvUsername)
 
+        auth = FirebaseAuth.getInstance()
+        databaseReference = FirebaseDatabase.getInstance().reference.child("users")
 
-        val username = intent.getStringExtra("username")
-        val email = intent.getStringExtra("email")
-        val profileImage = intent.getStringExtra("profileImage")
+        sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
 
-        // Hiển thị thông tin trên giao diện
-        tvUsername.text = username
-        tvEmail.text = email
+        val username = sharedPreferences.getString("username", "")
 
-        Glide.with(this@ProfileActivity).load(profileImage).into(ivAvatar)
+        if (!username.isNullOrEmpty()) {
+            tvUsername.text = username
 
+            databaseReference.child(username).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val user = snapshot.getValue(User::class.java)
 
-        btnSave.setOnClickListener {
+                        if (user != null) {
+                            // Cập nhật thông tin người dùng trên giao diện
+                            tvUsername.text = user.username
+                            tvEmail.text = user.email
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Xử lý lỗi nếu có
+                }
+            })
+
+            // nhấn nút chỉnh sửa
+
+        } else {
+
         }
     }
 }
