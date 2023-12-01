@@ -1,4 +1,4 @@
-package com.example.finalapplicationshare
+package com.example.finalapplicationshare.models
 
 data class Folder(
     val id: String,
