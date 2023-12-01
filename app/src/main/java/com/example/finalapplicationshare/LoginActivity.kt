@@ -58,7 +58,6 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        // Kiểm tra thông tin đăng nhập từ Firebase
         databaseReference.child(username).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -66,10 +65,8 @@ class LoginActivity : AppCompatActivity() {
 
                     if (user != null) {
                         if (user.password == password) {
-                            // Lưu thông tin người dùng vào SharedPreferences
                             saveUserInfo(user)
 
-                            // Chuyển đến trang MainActivity
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             finish()
                         } else {
