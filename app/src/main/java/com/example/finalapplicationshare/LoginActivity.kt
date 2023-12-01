@@ -46,6 +46,11 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+        tvForgerPass.setOnClickListener {
+            val intent = Intent(this@LoginActivity, ConfirmCode::class.java)
+            startActivity(intent)
+            finish()
+        }
 
     }
 

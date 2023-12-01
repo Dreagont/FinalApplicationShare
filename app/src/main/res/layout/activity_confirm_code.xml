@@ -7,26 +7,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="40dp"
-        android:text="Change Password"
-        />
+        android:text="Forget Password"/>
     <EditText
-        android:id="@+id/etNewPass"
+        android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="new pass"
-        android:layout_margin="10dp"
-        android:singleLine="true" />
-    <EditText
-        android:id="@+id/etConfirmNewPass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="confirm new pass"
+        android:hint="your username"
         android:layout_margin="10dp"
         android:singleLine="true" />
     <Button
-        android:id="@+id/btnChangePass"
+        android:id="@+id/btnReceiveMail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Change"
+        android:text="Receive Mail"
+        android:layout_gravity="center"/>
+    <EditText
+        android:id="@+id/etConfirmCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="123456"
+        android:layout_margin="10dp"
+        android:singleLine="true" />
+    <Button
+        android:id="@+id/btnConfirmCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cofirm"
         android:layout_gravity="center"/>
 </LinearLayout>

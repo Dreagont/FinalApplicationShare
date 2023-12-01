@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.finalapplicationshare.models.Folder
-import com.example.finalapplicationshare.utils.InputValidate
 import com.google.firebase.database.FirebaseDatabase
 
 class AddFolderActivity : AppCompatActivity() {
@@ -21,8 +20,8 @@ class AddFolderActivity : AppCompatActivity() {
         folderDescriptionEditText  = findViewById(R.id.folderDescription)
         addFolderButton = findViewById(R.id.btnAddFolder)
 
-        folderNameEditText.filters = arrayOf(InputValidate())
-        folderDescriptionEditText.filters = arrayOf(InputValidate())
+//        folderNameEditText.filters = arrayOf(InputValidate())
+//        folderDescriptionEditText.filters = arrayOf(InputValidate())
 
 
 

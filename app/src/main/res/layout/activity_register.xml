@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:singleLine="true"
         android:hint="username"/>
     <EditText
         android:id="@+id/etPass"
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:inputType="textPassword"
+        android:singleLine="true"
         android:hint="password"/>
     <EditText
         android:id="@+id/etConfirmPass"
@@ -31,12 +33,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:inputType="textPassword"
+        android:singleLine="true"
         android:hint="confirm password"/>
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:singleLine="true"
         android:hint="email"/>
     <Button
         android:id="@+id/btnRegister"
