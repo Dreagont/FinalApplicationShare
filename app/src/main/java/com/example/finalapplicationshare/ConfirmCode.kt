@@ -10,6 +10,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.util.Properties
+import java.util.Random
+import javax.mail.Authenticator
+import javax.mail.Message
+import javax.mail.MessagingException
+import javax.mail.PasswordAuthentication
+import javax.mail.Session
+import javax.mail.Transport
+import javax.mail.internet.AddressException
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage
 
 class ConfirmCode: AppCompatActivity() {
     private lateinit var btnConfirm: Button
@@ -40,40 +51,58 @@ class ConfirmCode: AppCompatActivity() {
         btnReceiveMail.setOnClickListener {
             val username = etUsername.text.toString()
 
-            // kiểm tra xem username có tồn tại
-            databaseReference.child(username).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        Toast.makeText(this@ConfirmCode, "Username exists. Enter confirmation code.", Toast.LENGTH_SHORT).show()
-                        // Kích hoạt etConfirmCode và btnConfirm nếu username tồn tại
-                        etConfirmCode.isEnabled = true
-                        btnConfirm.isEnabled = true
+            databaseReference.child(username)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val email =
+                                snapshot.child("email").value.toString()
+                            Toast.makeText(
+                                this@ConfirmCode,
+                                "Confirmation code gave in your email. Please enter code to change password",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
-                        val editor = sharedPreferences.edit()
-                        editor.putString("username", username)
-                        editor.apply()
+                            etConfirmCode.isEnabled = true
+                            btnConfirm.isEnabled = true
 
-                        btnReceiveMail.isEnabled = false
-                        etUsername.isEnabled = false
-                    } else {
-                        Toast.makeText(this@ConfirmCode, "Username not found", Toast.LENGTH_SHORT).show()
+                            val editor = sharedPreferences.edit()
+                            editor.putString("username", username)
+                            editor.putString("email", email)
+                            editor.apply()
 
-                        etConfirmCode.isEnabled = false
-                        btnConfirm.isEnabled = false
+                            btnReceiveMail.isEnabled = false
+                            etUsername.isEnabled = false
+
+                            // Gửi mã
+                            buttonSendEmail(email)
+                        } else {
+                            Toast.makeText(
+                                this@ConfirmCode,
+                                "Username not found",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            etConfirmCode.isEnabled = false
+                            btnConfirm.isEnabled = false
+                        }
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@ConfirmCode, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(
+                            this@ConfirmCode,
+                            "Error: ${error.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
+    }
 
         btnConfirm.setOnClickListener {
             val enteredCode = etConfirmCode.text.toString()
+            val savedCode = sharedPreferences.getString("confirmationCode", "")
 
-            if (enteredCode == "123456") {
-
+            if (enteredCode == savedCode) {
                 val username = etUsername.text.toString()
                 val editor = sharedPreferences.edit()
                 editor.putString("username", username)
@@ -88,4 +117,55 @@ class ConfirmCode: AppCompatActivity() {
         }
 
     }
+    fun buttonSendEmail(email: String) {
+        try {
+            val stringSenderEmail = "vate202@gmail.com"
+            val stringPasswordSenderEmail = "lktyqjjjbiyefldc"
+            val stringHost = "smtp.gmail.com"
+
+            val properties = Properties()
+            properties["mail.smtp.host"] = stringHost
+            properties["mail.smtp.port"] = "465"
+            properties["mail.smtp.ssl.enable"] = "true"
+            properties["mail.smtp.auth"] = "true"
+
+            val session = Session.getInstance(properties, object : Authenticator() {
+                override fun getPasswordAuthentication(): PasswordAuthentication {
+                    return PasswordAuthentication(stringSenderEmail, stringPasswordSenderEmail)
+                }
+            })
+
+            val mimeMessage = MimeMessage(session)
+            mimeMessage.addRecipient(Message.RecipientType.TO, InternetAddress(email))
+
+            val confirmationCode = generateConfirmationCode()
+            mimeMessage.subject = "Password Reset Confirmation Code"
+            mimeMessage.setText("Your confirmation code is: $confirmationCode")
+
+            val editor = sharedPreferences.edit()
+            editor.putString("confirmationCode", confirmationCode)
+            editor.apply()
+
+            val thread = Thread {
+                try {
+                    Transport.send(mimeMessage)
+                } catch (e: MessagingException) {
+                    e.printStackTrace()
+                }
+            }
+            thread.start()
+
+        } catch (e: AddressException) {
+            e.printStackTrace()
+        } catch (e: MessagingException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun generateConfirmationCode(): String {
+        val random = Random()
+        val confirmationCode = (100000 + random.nextInt(900000)).toString()
+        return confirmationCode
+    }
+
 }

@@ -32,6 +32,7 @@ import javax.mail.internet.AddressException
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 import java.util.Properties
+import java.util.Random
 
 
 class MainActivity : AppCompatActivity() {
@@ -97,48 +98,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun buttonSendEmail() {
-        try {
-            val stringSenderEmail = "vate202@gmail.com" //giu nguyen cai nay
-            val stringPasswordSenderEmail = "lktyqjjjbiyefldc"//giu nguyen cai nay
 
-            val stringReceiverEmail = "huynhannguyen333@gmail.com" // mail cua ban de test
-
-            val stringHost = "smtp.gmail.com"
-
-            val properties = Properties()
-
-            properties["mail.smtp.host"] = stringHost
-            properties["mail.smtp.port"] = "465"
-            properties["mail.smtp.ssl.enable"] = "true"
-            properties["mail.smtp.auth"] = "true"
-
-            val session = Session.getInstance(properties, object : Authenticator() {
-                override fun getPasswordAuthentication(): PasswordAuthentication {
-                    return PasswordAuthentication(stringSenderEmail, stringPasswordSenderEmail)
-                }
-            })
-
-            val mimeMessage = MimeMessage(session)
-            mimeMessage.addRecipient(Message.RecipientType.TO, InternetAddress(stringReceiverEmail))
-
-            mimeMessage.subject = "Bu'" //subject la chu de no hien o ngoai
-            mimeMessage.setText("I love u baby")
-            //text la ban xu li sao cho no giong voi cai ma ma ban tao
-
-            val thread = Thread {
-                try {
-                    Transport.send(mimeMessage)
-                } catch (e: MessagingException) {
-                    e.printStackTrace()
-                }
-            }
-            thread.start()
-
-        } catch (e: AddressException) {
-            e.printStackTrace()
-        } catch (e: MessagingException) {
-            e.printStackTrace()
-        }
-    }
 }
