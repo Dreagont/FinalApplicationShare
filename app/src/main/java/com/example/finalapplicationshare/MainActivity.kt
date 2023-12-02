@@ -22,6 +22,16 @@ import android.view.WindowManager
 //import androidx.databinding.DataBindingUtil
 import com.example.finalapplicationshare.databinding.ActivityMainBinding
 import org.checkerframework.common.subtyping.qual.Bottom
+import javax.mail.Authenticator
+import javax.mail.Message
+import javax.mail.MessagingException
+import javax.mail.PasswordAuthentication
+import javax.mail.Session
+import javax.mail.Transport
+import javax.mail.internet.AddressException
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage
+import java.util.Properties
 
 
 class MainActivity : AppCompatActivity() {
@@ -84,6 +94,51 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.fragmentContainerView, FragmentFolder())
                 .commit()
             invalidateOptionsMenu()
+        }
+    }
+
+    fun buttonSendEmail() {
+        try {
+            val stringSenderEmail = "vate202@gmail.com" //giu nguyen cai nay
+            val stringPasswordSenderEmail = "lktyqjjjbiyefldc"//giu nguyen cai nay
+
+            val stringReceiverEmail = "huynhannguyen333@gmail.com" // mail cua ban de test
+
+            val stringHost = "smtp.gmail.com"
+
+            val properties = Properties()
+
+            properties["mail.smtp.host"] = stringHost
+            properties["mail.smtp.port"] = "465"
+            properties["mail.smtp.ssl.enable"] = "true"
+            properties["mail.smtp.auth"] = "true"
+
+            val session = Session.getInstance(properties, object : Authenticator() {
+                override fun getPasswordAuthentication(): PasswordAuthentication {
+                    return PasswordAuthentication(stringSenderEmail, stringPasswordSenderEmail)
+                }
+            })
+
+            val mimeMessage = MimeMessage(session)
+            mimeMessage.addRecipient(Message.RecipientType.TO, InternetAddress(stringReceiverEmail))
+
+            mimeMessage.subject = "Bu'" //subject la chu de no hien o ngoai
+            mimeMessage.setText("I love u baby")
+            //text la ban xu li sao cho no giong voi cai ma ma ban tao
+
+            val thread = Thread {
+                try {
+                    Transport.send(mimeMessage)
+                } catch (e: MessagingException) {
+                    e.printStackTrace()
+                }
+            }
+            thread.start()
+
+        } catch (e: AddressException) {
+            e.printStackTrace()
+        } catch (e: MessagingException) {
+            e.printStackTrace()
         }
     }
 }
