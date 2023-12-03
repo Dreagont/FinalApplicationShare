@@ -19,6 +19,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toolbar
 //import androidx.databinding.DataBindingUtil
 import com.example.finalapplicationshare.databinding.ActivityMainBinding
 import org.checkerframework.common.subtyping.qual.Bottom
@@ -37,6 +38,8 @@ import java.util.Random
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+    private lateinit var myToolBar: Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -50,7 +53,6 @@ class MainActivity : AppCompatActivity() {
 
         val addButton = findViewById<Button>(R.id.btnAdd)
         val btnProfile = findViewById<Button>(R.id.btnProfile)
-
 
         addButton.setOnClickListener{
             showCustomDialog()

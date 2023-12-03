@@ -23,14 +23,32 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Profile"
-            android:id="@+id/btnProfile" />
+            android:text="Home"
+            android:textAllCaps="false"
+            android:id="@+id/btnHome" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Add"
+            android:textAllCaps="false"
             android:id="@+id/btnAdd" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Library"
+            android:textAllCaps="false"
+            android:id="@+id/btnLibrary" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Profile"
+            android:textAllCaps="false"
+            android:id="@+id/btnProfile" />
     </LinearLayout>
 </LinearLayout>
