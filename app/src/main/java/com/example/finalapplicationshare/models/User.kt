@@ -1,4 +1,4 @@
-package com.example.finalapplicationshare
+package com.example.finalapplicationshare.models
 data class User(
     val username: String = "",
     val password: String = "",

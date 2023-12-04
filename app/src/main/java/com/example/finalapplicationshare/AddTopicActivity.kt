@@ -1,5 +1,6 @@
 package com.example.finalapplicationshare
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -14,6 +15,8 @@ class AddTopicActivity : AppCompatActivity() {
     private lateinit var topicDescriptionEditText: EditText
     private lateinit var visibilityRadioGroup: RadioGroup
     private lateinit var addTopicButton: Button
+    private lateinit var btnOpenAddWord: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_topic)
@@ -22,6 +25,12 @@ class AddTopicActivity : AppCompatActivity() {
         topicDescriptionEditText = findViewById(R.id.topicDescription)
         visibilityRadioGroup = findViewById(R.id.chooseVisible)
         addTopicButton = findViewById(R.id.btnAddTopic)
+        btnOpenAddWord = findViewById(R.id.btnOpenAddWord)
+
+        btnOpenAddWord.setOnClickListener {
+            val intent = Intent(this@AddTopicActivity, AddWordActivity::class.java)
+            startActivity(intent)
+        }
 
         addTopicButton.setOnClickListener { addTopicToDataBase() }
     }
