@@ -23,8 +23,6 @@ class AddFolderActivity : AppCompatActivity() {
 //        folderNameEditText.filters = arrayOf(InputValidate())
 //        folderDescriptionEditText.filters = arrayOf(InputValidate())
 
-
-
         addFolderButton.setOnClickListener {
             addFolderToDatabase()
         }

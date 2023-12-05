@@ -73,7 +73,8 @@ class RegisterActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     showMessage("Username already exists. Please choose another username.")
-                } else {
+                }
+                else {
                     addValue(username, password, email, "Default.jpg")
                     val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                     startActivity(intent)

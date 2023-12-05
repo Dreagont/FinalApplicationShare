@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.finalapplicationshare.models.User
@@ -18,12 +17,17 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var etUsername: EditText
     private lateinit var etPassword: EditText
     private lateinit var btnLogin: Button
-    private lateinit var tvRegister:TextView
-    private lateinit var tvForgerPass:TextView
 
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
+
+    companion object {
+        const val USER_PREFS = "userPrefs"
+        const val USERNAME_KEY = "username"
+        const val EMAIL_KEY = "email"
+        const val PROFILE_IMAGE_KEY = "profileImage"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,27 +36,19 @@ class LoginActivity : AppCompatActivity() {
         etUsername = findViewById(R.id.etUsername)
         etPassword = findViewById(R.id.etPass)
         btnLogin = findViewById(R.id.btnLogin)
-        tvRegister = findViewById(R.id.tvRegister)
-        tvForgerPass = findViewById(R.id.tvForgetPass)
 
         auth = FirebaseAuth.getInstance()
         databaseReference = FirebaseDatabase.getInstance().reference.child("users")
 
-        sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE)
+
+        // Check if user is already authenticated
+        if (auth.currentUser != null) {
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish()
+        }
 
         btnLogin.setOnClickListener { loginUser() }
-
-        tvRegister.setOnClickListener{
-            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-        tvForgerPass.setOnClickListener {
-            val intent = Intent(this@LoginActivity, ConfirmCode::class.java)
-            startActivity(intent)
-            finish()
-        }
-
     }
 
     private fun loginUser() {
@@ -76,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             finish()
                         } else {
-                            // Sai mật khẩu
+                            // Incorrect password
                             Toast.makeText(this@LoginActivity, "Incorrect password", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -93,9 +89,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun saveUserInfo(user: User) {
         val editor = sharedPreferences.edit()
-        editor.putString("username", user.username)
-        editor.putString("email", user.email)
-        editor.putString("profileImage", user.profileImage)
+        editor.putString(USERNAME_KEY, user.username)
+        editor.putString(EMAIL_KEY, user.email)
+        editor.putString(PROFILE_IMAGE_KEY, user.profileImage)
         editor.apply()
     }
 }

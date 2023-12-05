@@ -45,6 +45,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (isUserLoggedIn()) {
+            // Nếu đã đăng nhập, hiển thị FragmentMain
+            showFragmentMain()
+        } else {
+            // Nếu chưa đăng nhập, hiển thị trang đăng nhập
+            showLoginActivity()
+        }
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainerView, FragmentMain())
@@ -61,8 +69,24 @@ class MainActivity : AppCompatActivity() {
         btnProfile.setOnClickListener{
             val intent = Intent(this@MainActivity, ProfileActivity::class.java)
             startActivity(intent)
-            finish()
         }
+    }
+    // Kiểm tra trạng thái đăng nhập
+    private fun isUserLoggedIn(): Boolean {
+        val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("username", null) != null
+    }
+
+    private fun showFragmentMain() {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, FragmentMain())
+                .commit()
+    }
+
+    private fun showLoginActivity() {
+        val intent = Intent(this@MainActivity, LoginActivity::class.java)
+        startActivity(intent)
+        finish()  // Đặt finish để ngăn người dùng quay lại MainActivity từ LoginActivity
     }
 
     private fun showCustomDialog() {
