@@ -40,16 +40,20 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var myToolBar: Toolbar
 
+    companion object {
+        const val USER_PREFS = "userPrefs"
+        const val USERNAME_KEY = "username"
+        const val EMAIL_KEY = "email"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         if (isUserLoggedIn()) {
-            // Nếu đã đăng nhập, hiển thị FragmentMain
             showFragmentMain()
         } else {
-            // Nếu chưa đăng nhập, hiển thị trang đăng nhập
             showLoginActivity()
         }
 
@@ -71,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-    // Kiểm tra trạng thái đăng nhập
+    // Kiểm tra đăng nhập
     private fun isUserLoggedIn(): Boolean {
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         return sharedPreferences.getString("username", null) != null
