@@ -17,11 +17,14 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toolbar
-//import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.example.finalapplicationshare.databinding.ActivityMainBinding
+//import androidx.databinding.DataBindingUtil
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.checkerframework.common.subtyping.qual.Bottom
 import javax.mail.Authenticator
 import javax.mail.Message
@@ -51,40 +54,40 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        replaceFragment(Home())
+
         if (isUserLoggedIn()) {
-            showFragmentMain()
+            replaceFragment(Home())
         } else {
             showLoginActivity()
         }
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, FragmentMain())
-                .commit()
-        }
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when(it.itemId) {
+                R.id.home -> replaceFragment(Home())
+                R.id.add -> showCustomDialog()
+                R.id.library -> replaceFragment(Library())
+                R.id.profile -> replaceFragment(Profile())
 
-        val addButton = findViewById<Button>(R.id.btnAdd)
-        val btnProfile = findViewById<Button>(R.id.btnProfile)
+                else -> {
 
-        addButton.setOnClickListener{
-            showCustomDialog()
-        }
-
-        btnProfile.setOnClickListener{
-            val intent = Intent(this@MainActivity, ProfileActivity::class.java)
-            startActivity(intent)
+                }
+            }
+            true
         }
     }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frameLayout, fragment)
+        fragmentTransaction.commit()
+    }
+
     // Kiểm tra đăng nhập
     private fun isUserLoggedIn(): Boolean {
         val sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE)
         return sharedPreferences.getString("username", null) != null
-    }
-
-    private fun showFragmentMain() {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, FragmentMain())
-                .commit()
     }
 
     private fun showLoginActivity() {
@@ -94,26 +97,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showCustomDialog() {
-        val dialog = Dialog(this)
-        dialog.setContentView(R.layout.custom_dialog)
-
-        dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
-        dialog.window?.setWindowAnimations(R.style.DialogAnimation)
-        dialog.window?.setGravity(Gravity.BOTTOM)
+        val view: View = layoutInflater.inflate(R.layout.custom_dialog, null)
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(view)
         dialog.show()
 
         val addFolder = dialog.findViewById<Button>(R.id.btnAddFolder)
         val addTopic = dialog.findViewById<Button>(R.id.btnAddTopic)
 
-        addFolder.setOnClickListener {
+        addFolder?.setOnClickListener {
             startActivity(Intent(this, AddFolderActivity::class.java))
             dialog.dismiss()
         }
-        addTopic.setOnClickListener {
+        addTopic?.setOnClickListener {
             startActivity(Intent(this, AddTopicActivity::class.java))
             dialog.dismiss()
         }
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -121,12 +122,8 @@ class MainActivity : AppCompatActivity() {
         if (sharedPref.getBoolean("showFragmentFolder", false)) {
             sharedPref.edit().putBoolean("showFragmentFolder", false).apply()
 
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, FragmentFolder())
-                .commit()
+            replaceFragment(Library())
             invalidateOptionsMenu()
         }
     }
-
-
 }

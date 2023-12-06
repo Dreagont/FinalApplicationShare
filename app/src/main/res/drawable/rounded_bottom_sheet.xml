@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#3C405A" /> <!-- Background color of EditText -->
+            <corners android:radius="4dp" /> <!-- Optional: if you want rounded corners -->
+            <padding android:bottom="10dp" /> <!-- Adjust padding to match your design -->
+        </shape>
+    </item>
+</shape>

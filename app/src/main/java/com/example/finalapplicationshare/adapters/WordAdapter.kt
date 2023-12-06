@@ -24,8 +24,8 @@ class WordAdapter(private val context: Context, private val wordList: List<Word>
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val word = wordList[position]
-        holder.wordTextView.text = word.english
-        holder.translationTextView.text = word.vietnamese
+        holder.wordTextView.text = word.term
+        holder.translationTextView.text = word.definition
     }
 
     override fun getItemCount(): Int {
