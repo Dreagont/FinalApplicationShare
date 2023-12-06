@@ -1,6 +1,7 @@
 package com.example.finalapplicationshare
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -49,7 +50,7 @@ class AddTopicActivity : AppCompatActivity() {
         val wordsMap = mutableMapOf<String, Word>()
 
 
-        for (i in 0 until topicContainer.childCount) {
+        for (i in 0 until topicContainer.childCount ) {
             val boxView = topicContainer.getChildAt(i) as? LinearLayout
             val termEditText = boxView?.findViewById<EditText>(R.id.termEditText)
             val definitionEditText = boxView?.findViewById<EditText>(R.id.definitionEditText)
@@ -59,7 +60,10 @@ class AddTopicActivity : AppCompatActivity() {
 
             if (term.isNotEmpty() && definition.isNotEmpty()) {
                 wordsMap[term] = Word(term, definition)
+                Log.d("WordsMap", "Term: $term, Definition: $definition")
             }
+            var count = topicContainer.childCount
+            Log.d("WordsMap", "child : $count")
         }
 
         if (wordsMap.size >= 2) {
@@ -74,6 +78,7 @@ class AddTopicActivity : AppCompatActivity() {
 
     private fun saveTopic(topic: Topic) {
         val databaseReference = FirebaseDatabase.getInstance().getReference("Topics")
+
         databaseReference.child(topic.id).setValue(topic)
             .addOnSuccessListener {
                 Toast.makeText(this, "Topic added successfully", Toast.LENGTH_SHORT).show()
